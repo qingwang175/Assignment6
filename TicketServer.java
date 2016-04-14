@@ -1,4 +1,4 @@
-package assignment6;
+package Assignment6;
 
 import java.io.BufferedReader;
 import java.io.IOException;

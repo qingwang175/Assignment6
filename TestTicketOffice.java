@@ -1,4 +1,4 @@
-package assignment6; 
+package Assignment6; 
 import static org.junit.Assert.fail; 
 import org.junit.Test; 
 public class TestTicketOffice { public static int score = 0;
