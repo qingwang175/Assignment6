@@ -1,13 +1,17 @@
 package Assignment6; 
 import static org.junit.Assert.fail; 
 import org.junit.Test; 
-public class TestTicketOffice { public static int score = 0;
-// @Test public void basicServerTest() {
+
+public class TestTicketOffice { 
+	public static int score = 0;
+@Test 
+public void basicServerTest() {
 try {
 TicketServer.start(16789);
 } catch (Exception e) { fail(); } TicketClient client = new TicketClient(); client.requestTicket();
 }
-@Test public void testServerCachedHardInstance() {
+@Test 
+public void testServerCachedHardInstance() {
 try {
 TicketServer.start(16790);
 } catch (Exception e) { fail(); } TicketClient client1 = new TicketClient("localhost", "c1"); TicketClient client2 = new TicketClient("localhost", "c2"); client1.requestTicket(); client2.requestTicket();
