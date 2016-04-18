@@ -56,14 +56,19 @@ public class TicketClient {
 		generateRandomClients();
 	}
 
-	synchronized void requestTicket() { //NEED TO FIX REMOVE FUNCTION
+	synchronized void requestTicket() { 
 		// TODO thread.run()
 		tc.run();
-		int i = 0;
+/*		int i = 0;
 		while(i<queue.size()){
 			System.out.println(hostName + ", " + threadName + ", Customer "+ queue.get(i).getCustNumber()+" got one ticket");
-			queue.remove(i);
+			i++;
+		}*/
+		
+		while(!queue.isEmpty()){
+			queue.remove(0);
 		}
+		
 	}
 
 	void sleep() {
