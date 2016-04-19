@@ -81,9 +81,6 @@ public class TicketServer {
 		if(row == 'Z' && seat > 28) {
 			return null;
 		} else if(seat == 28) {
-			if(row == 'Z') {
-				full = true;
-			}
 			temp = seatToSeatNum(seat) + Character.toString(row);
 			seat = 1;
 			row += 1;
@@ -127,12 +124,13 @@ class ThreadedTicketServer implements Runnable {
 			TicketServer server = new TicketServer();
 			
 			queuename = in.readLine();
+			out.println(server.bestAvailableSeat(queuename));
 			while(server.full == false) {
-				out.println(server.bestAvailableSeat(queuename));
 				temp = server.markAvailableSeatTaken(threadname);
 				if(temp != null) {
 					out.println(temp);
 				} 
+				out.println(server.bestAvailableSeat(queuename));
 			}
 			out.println("STOP");
 			
