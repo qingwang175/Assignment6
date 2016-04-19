@@ -20,6 +20,9 @@ public class TicketServer {
 		t.start();
 	}
 	
+	boolean full = false;
+	String markingThread = null;
+	
 	char row = 'A';
 	int seat = 1;
 	
@@ -35,12 +38,13 @@ public class TicketServer {
 	//If no best seat, it spits back a string that tells you so
 	//Had it the way Bates is, but found on Piazza we can simplify to A-Z in the format of Rows C-X, so commented it out (we can always change Back
 	
-	public String bestAvailableSeat () {
+	public String bestAvailableSeat (String office) {
 		String temp;
 		
 		temp = Integer.toString(seatToSeatNum(seat));
 		
 		if(row > 90 || (row == 90 && seat > 28)) {
+			full = true;
 			return "Sorry, we are sold out";
 		} else {
 			temp += Character.toString(row);
@@ -58,16 +62,23 @@ public class TicketServer {
 			}
 		}
 		*/
-		return temp;
+		return temp + " is the best available seat. (Request by Box Office + " + office + ")";
 	}
 	
 	//Returns a "102X" string
 	//Synchronized so that only one seat can be used at a time 
 	//Question: Should we let all through and simply return that the other threads entering should print a line saying seat not bought?
 	public synchronized String markAvailableSeatTaken (String threadNum) {
+		
+		if(markingThread != null) {
+			return "Box Office " + threadNum + ": Failed to reserve HR," + seat + row + ". Already allocated.";
+		} else {
+			markingThread = threadNum;
+		}
+		
 		String temp;
 		
-		if(row == 'Z' && seat == 28) {
+		if(row == 'Z' && seat > 28) {
 			return null;
 		} else if(seat == 28) {
 			temp = seatToSeatNum(seat) + Integer.toString(row);
@@ -77,11 +88,9 @@ public class TicketServer {
 			temp = seatToSeatNum(seat) + Integer.toString(row);
 			seat += 1;
 		}
-		return temp;
-	}
-	
-	public void printTicketSeat(String seat, String office) {
-		System.out.println("Office " + office + ": Reserved HR, " + seat + ".");
+		
+		markingThread = null;
+		return "Office " + threadNum + ": Reserved HR, " + temp + ".";
 	}
 	
 	//Changes from seat 1-28 to the according seat, 101 - 128
@@ -100,6 +109,8 @@ class ThreadedTicketServer implements Runnable {
 	String threadname = "X";
 	String testcase;
 	TicketClient sc;
+	String temp;
+	
 
 	public void run() {
 		// TODO 422C
@@ -109,6 +120,17 @@ class ThreadedTicketServer implements Runnable {
 			Socket clientSocket = serverSocket.accept();
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			TicketServer server = new TicketServer();
+			
+			threadname = in.readLine();
+			while(server.full == false) {
+				out.println(server.bestAvailableSeat(threadname));
+				temp = server.markAvailableSeatTaken(threadname);
+				if(temp != null) {
+					out.println(temp);
+				} 
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
