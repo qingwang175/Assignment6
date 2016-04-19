@@ -29,7 +29,7 @@ class ThreadedTicketClient implements Runnable {
 			String output = in.readLine(); //read String from server
 			while(!output.equals("STOP")){
 				System.out.println(output);
-				//output = in.readLine();
+				output = in.readLine();
 			}
 			
 			echoSocket.close();
