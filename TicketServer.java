@@ -130,6 +130,7 @@ class ThreadedTicketServer implements Runnable {
 					out.println(temp);
 				} 
 			}
+			out.println("STOP");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
