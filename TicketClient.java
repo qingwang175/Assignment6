@@ -17,6 +17,7 @@ class ThreadedTicketClient implements Runnable {
 	String hostname = "127.0.0.1";
 	String threadname = "X";
 	TicketClient sc;
+	boolean full = false;
 
 	public ThreadedTicketClient(TicketClient sc, String hostname, String threadname) {
 		this.sc = sc;
@@ -37,7 +38,7 @@ class ThreadedTicketClient implements Runnable {
 				System.out.println(output);
 				output = in.readLine();
 			}
-			
+			full = true;
 			echoSocket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,9 +75,9 @@ public class TicketClient {
 		tc.run();
 		
 		
-		while(!queue.isEmpty()){
-			queue.remove(0);
-		}
+		//while(!queue.isEmpty()){
+		//	queue.remove(0);
+		//}
 		
 	}
 

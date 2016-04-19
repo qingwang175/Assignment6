@@ -27,7 +27,7 @@ public class TicketServer {
 	}
 	
 	boolean full = false;
-	String markingThread = null;
+	//String markingThread = null;
 	
 	char row = 'A';
 	int seat = 1;
@@ -75,12 +75,13 @@ public class TicketServer {
 	//Synchronized so that only one seat can be used at a time 
 	//Question: Should we let all through and simply return that the other threads entering should print a line saying seat not bought?
 	public synchronized String markAvailableSeatTaken (String threadNum) {
-		
+		/*
 		if(markingThread != null) {
 			return "Box Office " + threadNum + ": Failed to reserve HR," + seat + row + ". Already allocated.";
 		} else {
 			markingThread = threadNum;
 		}
+		*/
 		
 		String temp;
 		
@@ -95,7 +96,7 @@ public class TicketServer {
 			seat += 1;
 		}
 		
-		markingThread = null;
+		//markingThread = null;
 		return "Box Office " + threadNum + ": Reserved HR, " + temp + ".";
 	}
 	
