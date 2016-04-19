@@ -25,7 +25,7 @@ class ThreadedTicketClient implements Runnable {
 			BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 			PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
-			out.println("A");
+			out.println(threadname);
 			String output = in.readLine(); //read String from server
 			while(!output.equals("STOP")){
 				System.out.println(output);

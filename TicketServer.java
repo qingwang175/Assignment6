@@ -43,7 +43,7 @@ public class TicketServer {
 		
 		temp = Integer.toString(seatToSeatNum(seat));
 		
-		if(row > 90 || (row == 90 && seat > 28)) {
+		if(row > 'Z' || (row == 'Z' && seat > 28)) {
 			full = true;
 			return "Sorry, we are sold out";
 		} else {
@@ -62,7 +62,7 @@ public class TicketServer {
 			}
 		}
 		*/
-		return temp + " is the best available seat. (Request by Box Office + " + office + ")";
+		return temp + " is the best available seat. (Request by Thread " + office + ")";
 	}
 	
 	//Returns a "102X" string
@@ -81,16 +81,19 @@ public class TicketServer {
 		if(row == 'Z' && seat > 28) {
 			return null;
 		} else if(seat == 28) {
-			temp = seatToSeatNum(seat) + Integer.toString(row);
+			if(row == 'Z') {
+				full = true;
+			}
+			temp = seatToSeatNum(seat) + Character.toString(row);
 			seat = 1;
 			row += 1;
 		} else {
-			temp = seatToSeatNum(seat) + Integer.toString(row);
+			temp = seatToSeatNum(seat) + Character.toString(row);
 			seat += 1;
 		}
 		
 		markingThread = null;
-		return "Office " + threadNum + ": Reserved HR, " + temp + ".";
+		return "Box Office " + threadNum + ": Reserved HR, " + temp + ".";
 	}
 	
 	//Changes from seat 1-28 to the according seat, 101 - 128
@@ -107,6 +110,7 @@ class ThreadedTicketServer implements Runnable {
 
 	String hostname = "127.0.0.1";
 	String threadname = "X";
+	String queuename;
 	String testcase;
 	TicketClient sc;
 	String temp;
@@ -122,9 +126,9 @@ class ThreadedTicketServer implements Runnable {
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			TicketServer server = new TicketServer();
 			
-			threadname = in.readLine();
+			queuename = in.readLine();
 			while(server.full == false) {
-				out.println(server.bestAvailableSeat(threadname));
+				out.println(server.bestAvailableSeat(queuename));
 				temp = server.markAvailableSeatTaken(threadname);
 				if(temp != null) {
 					out.println(temp);
