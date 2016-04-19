@@ -38,16 +38,17 @@ public class TicketServer {
 	public String bestAvailableSeat () {
 		String temp;
 		
+		temp = Integer.toString(seatToSeatNum(seat));
+		
 		if(row > 90 || (row == 90 && seat > 28)) {
-			return "No seats available";
+			return "Sorry, we are sold out";
 		} else {
-			temp = Character.toString(row);
+			temp += Character.toString(row);
 		}
 		
 		//if(row < 'D') {
 		//	temp += (seat + midRightOffset);
 		//} else if (row > 'C') {
-		temp += seatToSeatNum(seat);
 		//} 
 		/* else {
 			if(seat < 8) {
@@ -60,24 +61,27 @@ public class TicketServer {
 		return temp;
 	}
 	
-	//Returns a "X102" string 
-	public synchronized String markAvailableSeatTaken () {
+	//Returns a "102X" string
+	//Synchronized so that only one seat can be used at a time 
+	//Question: Should we let all through and simply return that the other threads entering should print a line saying seat not bought?
+	public synchronized String markAvailableSeatTaken (String threadNum) {
 		String temp;
+		
 		if(row == 'Z' && seat == 28) {
 			return null;
 		} else if(seat == 28) {
-			temp =  Integer.toString(row) + seatToSeatNum(seat);
+			temp = seatToSeatNum(seat) + Integer.toString(row);
 			seat = 1;
 			row += 1;
 		} else {
-			temp =  Integer.toString(row) + seatToSeatNum(seat);
+			temp = seatToSeatNum(seat) + Integer.toString(row);
 			seat += 1;
 		}
 		return temp;
 	}
 	
-	public String printTicketSeat(String seat) {
-		return null;
+	public void printTicketSeat(String seat, String office) {
+		System.out.println("Office " + office + ": Reserved HR, " + seat + ".");
 	}
 	
 	//Changes from seat 1-28 to the according seat, 101 - 128
