@@ -1,4 +1,11 @@
 package Assignment6; 
+
+/**
+ * @author Sumedh Shah
+ * @author Qing Wang
+ * EE422C Assignment 6
+ */
+
 import static org.junit.Assert.fail; 
 import org.junit.Test; 
 

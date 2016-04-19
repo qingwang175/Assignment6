@@ -1,5 +1,11 @@
 package Assignment6;
 
+/**
+ * @author Sumedh Shah
+ * @author Qing Wang
+ * EE422C Assignment 6
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,7 +51,7 @@ public class TicketServer {
 		
 		if(row > 'Z' || (row == 'Z' && seat > 28)) {
 			full = true;
-			return "Sorry, we are sold out";
+			return "Sorry, we are sold out.";
 		} else {
 			temp += Character.toString(row);
 		}
