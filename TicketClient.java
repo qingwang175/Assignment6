@@ -9,6 +9,7 @@ package Assignment6;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,17 +31,21 @@ class ThreadedTicketClient implements Runnable {
 		try {
 			Socket echoSocket = new Socket(hostname, TicketServer.PORT);
 			BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			//BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 			PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
 			out.println(threadname);
-			String output = in.readLine(); //read String from server
+			String output = in.readLine(); //read String from server, what is the best seat
+			
 			while(!output.equals("STOP")){
+				//System.out.println(threadname);
 				System.out.println(output);
 				output = in.readLine();
 			}
-			full = true;
 			echoSocket.close();
-		} catch (Exception e) {
+		} catch (ConnectException cs) {  //Once the seats are sold out, just end program and catch these
+			return;
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -70,7 +75,7 @@ public class TicketClient {
 		generateRandomClients();
 	}
 
-	synchronized void requestTicket() { 
+	void requestTicket() { 
 		// TODO thread.run()
 		tc.run();
 		

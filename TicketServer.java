@@ -72,7 +72,7 @@ public class TicketServer {
 	}
 	
 	//Returns a "102X" string
-	//Synchronized so that only one seat can be used at a time 
+	//Synchronized so that only one seat can be used at a time ?
 	//Question: Should we let all through and simply return that the other threads entering should print a line saying seat not bought?
 	public synchronized String markAvailableSeatTaken (String threadNum) {
 		/*
@@ -140,7 +140,7 @@ class ThreadedTicketServer implements Runnable {
 				out.println(server.bestAvailableSeat(queuename));
 			}
 			out.println("STOP");
-			
+			serverSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
