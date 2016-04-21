@@ -37,8 +37,8 @@ class ThreadedTicketClient implements Runnable {
 			String output = in.readLine(); //read String from server, what is the best seat
 			
 			while(!output.equals("STOP")){
-				//System.out.println(threadname);
 				System.out.println(output);
+				out.println(threadname);
 				output = in.readLine();
 			}
 			echoSocket.close();

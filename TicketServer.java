@@ -6,12 +6,12 @@ package Assignment6;
  * EE422C Assignment 6
  */
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+//import java.io.InputStreamReader;
+//import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
+//import java.net.Socket;
 
 public class TicketServer {
 	static int PORT = 2222;
@@ -86,6 +86,7 @@ public class TicketServer {
 		String temp;
 		
 		if(row == 'Z' && seat > 28) {
+			full = true;
 			return null;
 		} else if(seat == 28) {
 			temp = seatToSeatNum(seat) + Character.toString(row);
@@ -118,28 +119,22 @@ class ThreadedTicketServer implements Runnable {
 	String testcase;
 	TicketClient sc;
 	String temp;
-	
-
+	ServerThread st;
 	public void run() {
 		// TODO 422C
 		ServerSocket serverSocket;
 		try {
 			serverSocket = new ServerSocket(TicketServer.PORT);
-			Socket clientSocket = serverSocket.accept();
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			TicketServer server = new TicketServer();
+			TicketServer server = new TicketServer();  // Has information about the theater and functions
 			
-			queuename = in.readLine();
-			out.println(server.bestAvailableSeat(queuename));
 			while(server.full == false) {
-				temp = server.markAvailableSeatTaken(threadname);
-				if(temp != null) {
-					out.println(temp);
-				} 
-				out.println(server.bestAvailableSeat(queuename));
+				st = new ServerThread(serverSocket.accept());
+				st.start();
 			}
-			out.println("STOP");
+			
+			while(server.fu)
+			
+			
 			serverSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
