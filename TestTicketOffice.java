@@ -62,6 +62,7 @@ public void twoConcurrentServerTest() {
 	Thread t2 = new Thread() { 
 		public void run() { 
 			c2.requestTicket();
+	
 		} 
 	}; 
 	Thread t3 = new Thread() { 

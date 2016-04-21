@@ -36,10 +36,17 @@ class ThreadedTicketClient implements Runnable {
 			out.println(threadname);
 			String output = in.readLine(); //read String from server, what is the best seat
 			
-			while(!output.equals("STOP")){
+			while(!output.equals("STOP")){ //STOP is flag from server when seats are out
 				System.out.println(output);
-				out.println(threadname);
-				output = in.readLine();
+				try {
+					Thread.sleep(5); //Allows concurrency to work
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				out.println(threadname); //Sends threadname to server, to buy ticket
+				output = in.readLine(); //The results of buying the ticket
 			}
 			echoSocket.close();
 		} catch (ConnectException cs) {  //Once the seats are sold out, just end program and catch these
@@ -75,7 +82,7 @@ public class TicketClient {
 		generateRandomClients();
 	}
 
-	void requestTicket() { 
+	void requestTicket() { //Use this
 		// TODO thread.run()
 		tc.run();
 		
